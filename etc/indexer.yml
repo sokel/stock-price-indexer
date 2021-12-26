@@ -1,0 +1,10 @@
+indexer:
+  ticker_period: 5s
+  ticker: 'ETH/USDT'
+  # avilable func: mean/median/min/max
+  index_func: 'max'
+
+stub_stream:
+  tick_duration: 1s
+  price_median: 10000
+  price_derivation: 20000

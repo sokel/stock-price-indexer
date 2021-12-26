@@ -1,5 +1,21 @@
 #!/usr/bin/env make
 
+.PHONY: fmt vet test version
+
+# Version of the entire package. Do not forget to update this when it's time
+# to bump the version.
+VERSION = v0.0.1
+
+# Build tag. Useful to distinguish between same-version builds, but from
+# different commits.
+BUILD = $(shell git rev-parse --short HEAD)
+
+# Full version includes both semantic version and git ref if present.
+ifeq (${BUILD},)
+	FULL_VERSION = $(VERSION)
+else
+	FULL_VERSION = $(VERSION)-$(BUILD)
+endif
 
 # NOTE: variables defined with := in GNU make are expanded when they are
 # defined rather than when they are used.
@@ -25,11 +41,13 @@ endif
 
 OS_ARCH := $(GOOS)_$(GOARCH)$(EXE)
 
+LDFLAGS = -X stock-price-indexer/version.Version=$(FULL_VERSION)
+
+TAGS = nocgo
+
 
 INDEXER := ${TARGETDIR}/indexer_$(OS_ARCH)
 
-
-TAGS = nocgo
 
 build: build/indexer
 
